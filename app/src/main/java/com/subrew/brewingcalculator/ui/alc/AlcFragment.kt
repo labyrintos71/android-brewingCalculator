@@ -30,8 +30,8 @@ class AlcFragment : Fragment() {
 
         _binding = FragmentAlcBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        binding.alcDefaultweight.setText("1231")
-        binding.alcFirstweight.setText("3606")
+        binding.alcDefaultweight.setText("1275")
+        binding.alcFirstweight.setText("3651")
         binding.alcNowweight.setText("0")
         binding.alcDefaultweight.addTextChangedListener { calAlc() }
         binding.alcFirstweight.addTextChangedListener { calAlc() }
@@ -52,17 +52,21 @@ class AlcFragment : Fragment() {
     private fun calAlc() {
         val first = if (binding.alcFirstweight.text.toString()
                 .isNotEmpty()
-        ) binding.alcFirstweight.text.toString().toBigDecimal() else BigDecimal(3606)
+        ) binding.alcFirstweight.text.toString().toBigDecimal() else BigDecimal(3651)
         val now = if (binding.alcNowweight.text.toString()
                 .isNotEmpty()
         ) binding.alcNowweight.text.toString().toBigDecimal() else BigDecimal(0)
         val def = if (binding.alcDefaultweight.text.toString()
                 .isNotEmpty()
-        ) binding.alcDefaultweight.text.toString().toBigDecimal() else BigDecimal(1231)
+        ) binding.alcDefaultweight.text.toString().toBigDecimal() else BigDecimal(1275)
 
-
-        binding.alcResult.text = "${first.minus(now).divide(now.minus(def),3, RoundingMode.HALF_EVEN)}%"
 
         // 알코올 도수 = (처음 총무게 - 현재 총 무게)/(현재 총무게 - 용기의 무게)
+        binding.alcResult.text = "${
+            first.minus(now).divide(now.minus(def),4, RoundingMode.HALF_EVEN).multiply(
+                BigDecimal(100)
+            ).setScale(2)
+        }%"
+
     }
 }
